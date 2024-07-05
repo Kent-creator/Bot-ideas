@@ -1,0 +1,48 @@
+           ("ini adalah ide pengembangan bot discord")
+
+Menyimpan Meme yang Berdasarkan dengan Topik:
+
+(Pengguna dapat menambahkan meme dengan topik tertentu.
+Meme akan disimpan dalam kategori yang sesuai.)
+
+Kelangkaan Meme:
+
+Setiap meme akan diberikan nilai kelangkaan (Contohnya, umum, langka, sangat langka).
+Pengguna bisa meminta meme berdasarkan tingkat kelangkaan.
+
+Contoh code:
+
+import random
+
+class MemeCollector:
+    def __init__(self):
+        self.memes = {}
+    
+    def add_meme(self, topic, meme, rarity):
+        if topic not in self.memes:
+            self.memes[topic] = []
+        self.memes[topic].append({'meme': meme, 'rarity': rarity})
+    
+    def get_meme(self, topic, rarity=None):
+        if topic not in self.memes:
+            return "Topik tidak ditemukan!"
+        
+        filtered_memes = self.memes[topic]
+        if rarity:
+            filtered_memes = [m for m in self.memes[topic] if m['rarity'] == rarity]
+        
+        if not filtered_memes:
+            return "Tidak ada meme dengan kelangkaan tersebut di topik ini!"
+        
+        return random.choice(filtered_memes)['meme']
+
+# Contoh penggunaan
+collector = MemeCollector()
+collector.add_meme('animals', 'Meme 1 tentang hewan', 'common')
+collector.add_meme('animals', 'Meme 2 tentang hewan', 'rare')
+collector.add_meme('animals', 'Meme 3 tentang hewan', 'very rare')
+collector.add_meme('tech', 'Meme 1 tentang teknologi', 'common')
+
+print(collector.get_meme('animals'))  # Mendapatkan meme acak tentang hewan
+print(collector.get_meme('animals', 'rare'))  # Mendapatkan meme langka tentang hewan
+print(collector.get_meme('tech'))  # Mendapatkan meme acak tentang teknologi
